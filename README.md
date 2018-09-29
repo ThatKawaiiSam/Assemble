@@ -1,23 +1,30 @@
 # Assemble
-A Spigot/Bukkit API library to create and update scoreboards.
+A high performance Scoreboard API for Spigot 1.7.x to 1.13
+All credit goes to Joeleoli on the original plugin which you can find here: https://github.com/joeleoli/Frame
 
-Many of the scoreboard libraries I've used are pretty trash and perform a heap of unnecessary operations. This maintains a similar structure to most libraries out there, but the internal functionality is more efficient and only does what it needs to do.
-
-### Credits
-* BizarreAlex for the structure
-* Joelioli for the original plugin
+Essentially several production projects that I am apart of required very high performance components to support hundreds of concurrent players per instance. The original version of this plugin gave us this performance with the tradeoff of small features that we needed to further optimise it and give it a unique feel. So I decided to open-source my fork to build my portfolio. 
 
 ### Features
 * Non-flickering.
 * Supports up to 32 characters per line.
 * Extremely light weight.
 * Developer friendly. Setup your board in a few lines.
+* Custom Events for other plugins to easily hook into.
+* Several different styles (Viper, Kohi, Modern)
+* Changable timing intervals
 
-### Example
+### Code Examples
 ```
 @Override
 public void onEnable() {
-	new Assemble(new ExampleAssembleAdapter());
+        //Start Instance
+	Assemble assemble = new Assemble(new ExampleAssembleAdapter());
+	
+	//Set Interval (Tip: 20 ticks = 1 second)
+	assemble.setTicks(2);
+	
+	//Set Style (Tip: Viper Style starts at -1 and goes down)
+	assemble.setAssembleStyle(AssembleStyle.VIPER);
 }
 ```
 ```
@@ -30,15 +37,9 @@ public class ExampleAssembleAdapter implements AssembleAdapter {
 
 	@Override
 	public List<String> getLines(Player player) {
-		final int rand = ThreadLocalRandom.current().nextInt(500);
 		final List<String> toReturn = new ArrayList<>();
 
-		toReturn.add("&eThis is an example board.");
-		toReturn.add("&dAs you can see, it supports");
-		toReturn.add("&dup to 32 characters per line.");
-		toReturn.add("&aDon't forget... Colors count");
-		toReturn.add("&btowards the character count.");
-		toReturn.add("Random number: " + rand);
+        toReturn.add("&a&lThis is a line!");
 
 		return toReturn;
 	}
@@ -54,3 +55,11 @@ public class AssembleSampleListeners implements Listener {
     }
 }
 ```
+
+###Contact
+MC-Market: https://www.mc-market.org/members/53967/
+
+Discord: ThatKawaiiSam#3881  
+
+Email: sam@orionmc.net
+
