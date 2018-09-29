@@ -1,0 +1,70 @@
+<<<<<<< HEAD
+# Eclipse
+/.classpath
+/.project
+/.settings
+
+# Netbeans
+/nbproject
+
+# We active maven!
+/build.xml
+
+# Maven
+/target
+/dependency-reduced-pom.xml
+*/target
+*/dependency-reduced-pom.xml
+
+# Vim
+.*.sw[a-p]
+
+# Various other potential build files
+/build
+/bin
+/dist
+/manifest.mf
+/MANIFEST.MF
+/META-INF/MANIFEST.MF
+git.properties
+.ssh
+key
+key.pub
+dependency-reduced-pom.xml
+
+# Mac Filesystem Dust
+.DS_Store
+
+# IntelliJ IDEA
+*.iml
+*.ipr
+*.iws
+.idea/
+
+#Libraries jar files
+libraries/*.jar
+=======
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+>>>>>>> 354c5c7d98801e512c3da0913cd1824a9cf4b2cf
