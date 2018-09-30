@@ -14,7 +14,7 @@ Essentially several production projects that I am apart of required very high pe
 * Changable timing intervals
 
 ### Code Examples
-```
+```java
 @Override
 public void onEnable() {
         //Start Instance
@@ -27,7 +27,8 @@ public void onEnable() {
 	assemble.setAssembleStyle(AssembleStyle.VIPER);
 }
 ```
-```
+
+```java
 public class ExampleAssembleAdapter implements AssembleAdapter {
 
 	@Override
@@ -46,7 +47,8 @@ public class ExampleAssembleAdapter implements AssembleAdapter {
 
 }
 ```
-```
+
+```java
 public class AssembleSampleListeners implements Listener {
 
     @EventHandler
@@ -56,10 +58,9 @@ public class AssembleSampleListeners implements Listener {
 }
 ```
 
-###Contact
-MC-Market: https://www.mc-market.org/members/53967/
+### Contact
 
-Discord: ThatKawaiiSam#3881  
-
-Email: sam@orionmc.net
+- MC-Market: https://www.mc-market.org/members/53967/
+- Discord: ThatKawaiiSam#3881  
+- Email: sam@orionmc.net
 
