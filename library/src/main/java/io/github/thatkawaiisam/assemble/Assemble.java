@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
+import com.sun.istack.internal.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +33,10 @@ public class Assemble {
 			throw new RuntimeException("Assemble has already been instantiated!");
 		}
 
+		if (plugin == null) {
+			throw new RuntimeException("Assemble can not be instantiated without a plugin instance!");
+		}
+
 		instance = this;
 
 		this.plugin = plugin;
@@ -39,8 +44,6 @@ public class Assemble {
 		this.boards = new ConcurrentHashMap<>();
 
 		this.setup();
-
-		Logger.getAnonymousLogger().info("[Assemble] Assemble has been loaded!");
 	}
 
 	private void setup() {
