@@ -1,6 +1,5 @@
 package io.github.thatkawaiisam.assemble;
 
-import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
@@ -98,7 +97,9 @@ public class AssembleThread extends Thread {
                     // Update text, setup the team, and update the display values
                     entry.setText(line);
                     entry.setup();
-                    entry.send(this.assemble.getAssembleStyle().isDecending() ? cache-- : cache++);
+                    entry.send(
+                            this.assemble.getAssembleStyle().isDecending() ? cache-- : cache++
+                    );
                 }
             }
 

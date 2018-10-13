@@ -37,6 +37,9 @@ public class AssembleListener implements Listener {
 
 	@EventHandler
 	public void onPluginDisable(PluginDisableEvent event) {
+		if (Assemble.getInstance().getThread() == null) {
+			return;
+		}
 		Assemble.getInstance().getThread().stop();
 	}
 
