@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
@@ -19,9 +20,11 @@ public class Assemble {
 	private AssembleAdapter adapter;
 	private Map<UUID, AssembleBoard> boards;
 	private AssembleThread thread;
+	private AssembleListener listeners;
 
 	//Scoreboard Ticks
 	@Setter private long ticks = 2;
+	@Setter private boolean hook = false;
 
 	//Default Scoreboard Style
 	@Setter private AssembleStyle assembleStyle = AssembleStyle.MODERN;
@@ -45,8 +48,9 @@ public class Assemble {
 	}
 
 	private void setup() {
+		listeners = new AssembleListener();
 		//Register Events
-		this.plugin.getServer().getPluginManager().registerEvents(new AssembleListener(), this.plugin);
+		this.plugin.getServer().getPluginManager().registerEvents(listeners, this.plugin);
 
 		//Ensure that the thread has stopped running
 		if (this.thread != null) {
@@ -56,6 +60,18 @@ public class Assemble {
 
 		//Start Thread
 		this.thread = new AssembleThread(this);
+	}
+
+	public void disable() {
+		if (this.thread != null) {
+			this.thread.stop();
+			this.thread = null;
+		}
+
+		if (listeners != null) {
+			HandlerList.unregisterAll(listeners);
+			listeners = null;
+		}
 	}
 
 }

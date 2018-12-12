@@ -4,6 +4,7 @@ import io.github.thatkawaiisam.assemble.events.AssembleBoardCreateEvent;
 import io.github.thatkawaiisam.assemble.events.AssembleBoardDestroyEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -37,10 +38,7 @@ public class AssembleListener implements Listener {
 
 	@EventHandler
 	public void onPluginDisable(PluginDisableEvent event) {
-		if (Assemble.getInstance().getThread() == null) {
-			return;
-		}
-		Assemble.getInstance().getThread().stop();
+		Assemble.getInstance().disable();
 	}
 
 }

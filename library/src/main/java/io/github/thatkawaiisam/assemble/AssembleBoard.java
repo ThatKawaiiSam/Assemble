@@ -29,10 +29,10 @@ public class AssembleBoard {
 
 	private void setup(Player player) {
 		// Register new scoreboard if needed
-		if (player.getScoreboard().equals(Bukkit.getScoreboardManager().getMainScoreboard())) {
-			this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-		} else {
+		if (Assemble.getInstance().isHook() && !player.getScoreboard().equals(Bukkit.getScoreboardManager().getMainScoreboard())) {
 			this.scoreboard = player.getScoreboard();
+		} else {
+			this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 		}
 
 		// Setup sidebar objective
