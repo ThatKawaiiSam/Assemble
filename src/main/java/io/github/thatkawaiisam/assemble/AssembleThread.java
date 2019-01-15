@@ -47,6 +47,7 @@ public class AssembleThread extends Thread {
             final Scoreboard scoreboard = board.getScoreboard();
             final Objective objective = board.getObjective();
 
+
             // Just make a variable so we don't have to
             // process the same thing twice
             final String title = ChatColor.translateAlternateColorCodes('&', this.assemble.getAdapter().getTitle(player));

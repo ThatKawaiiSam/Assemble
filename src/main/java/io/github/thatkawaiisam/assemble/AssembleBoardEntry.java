@@ -9,9 +9,7 @@ import org.bukkit.scoreboard.Team;
 public class AssembleBoardEntry {
 
 	private final AssembleBoard board;
-	@Setter
-	private String text;
-	private String identifier;
+	@Setter private String text, identifier;
 	private Team team;
 
 	public AssembleBoardEntry(AssembleBoard board, String text) {
@@ -24,6 +22,12 @@ public class AssembleBoardEntry {
 
 	public void setup() {
 		final Scoreboard scoreboard = this.board.getScoreboard();
+
+		if (scoreboard == null) {
+			return;
+		}
+
+
 		String teamName = this.identifier;
 
 		// This shouldn't happen, but just in case

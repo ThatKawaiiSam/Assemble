@@ -2,6 +2,7 @@ package io.github.thatkawaiisam.assemble;
 
 import io.github.thatkawaiisam.assemble.events.AssembleBoardCreateEvent;
 import io.github.thatkawaiisam.assemble.events.AssembleBoardDestroyEvent;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,7 +11,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 
+@Getter
 public class AssembleListener implements Listener {
+
+	private Assemble assemble;
+
+	public AssembleListener(Assemble assemble) {
+		this.assemble = assemble;
+	}
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
@@ -21,7 +29,7 @@ public class AssembleListener implements Listener {
 			return;
 		}
 
-		Assemble.getInstance().getBoards().put(event.getPlayer().getUniqueId(), new AssembleBoard(event.getPlayer()));
+		getAssemble().getBoards().put(event.getPlayer().getUniqueId(), new AssembleBoard(event.getPlayer(), getAssemble()));
 	}
 
 	@EventHandler
@@ -33,12 +41,14 @@ public class AssembleListener implements Listener {
 			return;
 		}
 
-		Assemble.getInstance().getBoards().remove(event.getPlayer().getUniqueId());
+		getAssemble().getBoards().remove(event.getPlayer().getUniqueId());
+		event.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
 	}
 
-	@EventHandler
-	public void onPluginDisable(PluginDisableEvent event) {
-		Assemble.getInstance().disable();
-	}
+	//TODO see how we can make this better
+//	@EventHandler
+//	public void onPluginDisable(PluginDisableEvent event) {
+//		getAssemble().disable();
+//	}
 
 }
