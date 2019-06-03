@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -47,6 +48,14 @@ public class Assemble {
 
 		//Start Thread
 		this.thread = new AssembleThread(this);
+		Bukkit.getOnlinePlayers().forEach(o -> getBoards().put(o.getUniqueId(), new AssembleBoard(o, this)));
+	}
+
+	public void setdown() {
+		Bukkit.getOnlinePlayers().forEach(o -> {
+			getBoards().remove(o.getUniqueId());
+			o.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+		});
 	}
 
 	public void cleanup() {
