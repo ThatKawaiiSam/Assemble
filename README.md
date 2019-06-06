@@ -18,7 +18,7 @@ Essentially several production projects that I am apart of required very high pe
 @Override
 public void onEnable() {
         //Start Instance
-	Assemble assemble = new Assemble(new ExampleAssembleAdapter());
+	Assemble assemble = new Assemble(this, new ExampleAssembleAdapter());
 	
 	//Set Interval (Tip: 20 ticks = 1 second)
 	assemble.setTicks(2);
