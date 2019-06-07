@@ -38,7 +38,7 @@ public class Assemble {
 		this.setup();
 	}
 
-	private void setup() {
+	public void setup() {
 		listeners = new AssembleListener(this);
 
 		//Register Events
