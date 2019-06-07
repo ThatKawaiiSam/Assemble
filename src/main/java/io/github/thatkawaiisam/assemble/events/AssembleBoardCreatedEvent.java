@@ -10,6 +10,7 @@ import org.bukkit.event.HandlerList;
 public class AssembleBoardCreatedEvent extends Event {
 
     @Getter public static HandlerList handlerList = new HandlerList();
+
     private boolean cancelled = false;
     private final AssembleBoard board;
 

@@ -4,11 +4,15 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import io.github.thatkawaiisam.assemble.events.AssembleBoardCreateEvent;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.DisplaySlot;
 
 @Getter @Setter
 public class Assemble {
@@ -36,6 +40,7 @@ public class Assemble {
 
 	private void setup() {
 		listeners = new AssembleListener(this);
+
 		//Register Events
 		this.plugin.getServer().getPluginManager().registerEvents(listeners, this.plugin);
 
@@ -43,6 +48,19 @@ public class Assemble {
 		if (this.thread != null) {
 			this.thread.stop();
 			this.thread = null;
+		}
+
+		//Register new boards for existing online players
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			//Make sure it doesn't double up
+			AssembleBoardCreateEvent createEvent = new AssembleBoardCreateEvent(player);
+
+			Bukkit.getPluginManager().callEvent(createEvent);
+			if (createEvent.isCancelled()) {
+				return;
+			}
+
+			getBoards().put(player.getUniqueId(), new AssembleBoard(player, this));
 		}
 
 		//Start Thread
@@ -58,6 +76,12 @@ public class Assemble {
 		if (listeners != null) {
 			HandlerList.unregisterAll(listeners);
 			listeners = null;
+		}
+
+		for (UUID uuid : getBoards().keySet()) {
+			Player player = Bukkit.getPlayer(uuid);
+			getBoards().remove(uuid);
+			player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
 		}
 	}
 
