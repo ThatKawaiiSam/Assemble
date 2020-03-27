@@ -6,16 +6,20 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import java.util.Set;
+
 public class AssembleBoardEntry {
 
 	private final AssembleBoard board;
 	@Setter private String text, identifier;
 	private Team team;
+	private int position;
 
-	public AssembleBoardEntry(AssembleBoard board, String text) {
+	public AssembleBoardEntry(AssembleBoard board, String text, int position) {
 		this.board = board;
 		this.text = text;
-		this.identifier = this.board.getUniqueIdentifier(text);
+		this.position = position;
+		this.identifier = this.board.getUniqueIdentifier(position);
 
 		this.setup();
 	}
@@ -26,7 +30,6 @@ public class AssembleBoardEntry {
 		if (scoreboard == null) {
 			return;
 		}
-
 
 		String teamName = this.identifier;
 

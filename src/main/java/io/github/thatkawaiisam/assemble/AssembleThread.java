@@ -23,7 +23,7 @@ public class AssembleThread extends Thread {
             //Tick
             try {
                 tick();
-            } catch (NullPointerException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             //Thread Sleep
@@ -59,11 +59,16 @@ public class AssembleThread extends Thread {
 
             List<String> newLines = this.assemble.getAdapter().getLines(player);
 
+
             // Allow adapter to return null/empty list to display nothing
             if (newLines == null || newLines.isEmpty()) {
                 board.getEntries().forEach(AssembleBoardEntry::remove);
                 board.getEntries().clear();
             } else {
+                if (this.assemble.getAdapter().getLines(player).size() > 15) {
+                    newLines = this.assemble.getAdapter().getLines(player).subList(0, 15);
+                }
+
                 // Reverse the lines because scoreboard scores are in descending order
                 if (!this.assemble.getAssembleStyle().isDecending()) {
                     Collections.reverse(newLines);
@@ -92,7 +97,7 @@ public class AssembleThread extends Thread {
                     // Creating a new AssembleBoardEntry instance will add
                     // itself to the provided board's entries list.
                     if (entry == null) {
-                        entry = new AssembleBoardEntry(board, line);
+                        entry = new AssembleBoardEntry(board, line, i);
                     }
 
                     // Update text, setup the team, and update the display values
@@ -104,9 +109,9 @@ public class AssembleThread extends Thread {
                 }
             }
 
-//            if (player.getScoreboard() != scoreboard) {
-//                player.setScoreboard(scoreboard);
-//            }
+            if (player.getScoreboard() != scoreboard && !assemble.isHook()) {
+                player.setScoreboard(scoreboard);
+            }
         }
     }
 }

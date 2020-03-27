@@ -12,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.DisplaySlot;
 
 @Getter @Setter
 public class Assemble {
@@ -25,6 +24,7 @@ public class Assemble {
 	private long ticks = 2;
 	private boolean hook = false;
 	private AssembleStyle assembleStyle = AssembleStyle.MODERN;
+	private boolean debugMode = true;
 
 	public Assemble(JavaPlugin plugin, AssembleAdapter adapter) {
 		if (plugin == null) {
@@ -39,9 +39,8 @@ public class Assemble {
 	}
 
 	public void setup() {
-		listeners = new AssembleListener(this);
-
 		//Register Events
+		this.listeners = new AssembleListener(this);
 		this.plugin.getServer().getPluginManager().registerEvents(listeners, this.plugin);
 
 		//Ensure that the thread has stopped running
@@ -60,7 +59,7 @@ public class Assemble {
 				return;
 			}
 
-			getBoards().put(player.getUniqueId(), new AssembleBoard(player, this));
+			getBoards().putIfAbsent(player.getUniqueId(), new AssembleBoard(player, this));
 		}
 
 		//Start Thread
@@ -80,8 +79,13 @@ public class Assemble {
 
 		for (UUID uuid : getBoards().keySet()) {
 			Player player = Bukkit.getPlayer(uuid);
+
+			if (player == null || !player.isOnline()) {
+				continue;
+			}
+
 			getBoards().remove(uuid);
-			player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+			player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 		}
 	}
 

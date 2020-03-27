@@ -5,11 +5,9 @@ import io.github.thatkawaiisam.assemble.events.AssembleBoardDestroyEvent;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.server.PluginDisableEvent;
 
 @Getter
 public class AssembleListener implements Listener {
@@ -44,11 +42,5 @@ public class AssembleListener implements Listener {
 		getAssemble().getBoards().remove(event.getPlayer().getUniqueId());
 		event.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
 	}
-
-	//TODO see how we can make this better
-//	@EventHandler
-//	public void onPluginDisable(PluginDisableEvent event) {
-//		getAssemble().disable();
-//	}
 
 }

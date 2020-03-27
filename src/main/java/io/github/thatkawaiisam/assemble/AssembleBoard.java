@@ -25,14 +25,14 @@ public class AssembleBoard {
 	private final List<String> identifiers = new ArrayList<>();
 	private Scoreboard scoreboard;
 	private Objective objective;
-	private UUID uuid;
+	private final UUID uuid;
 
 	private Assemble assemble;
 
 	public AssembleBoard(Player player, Assemble assemble) {
+		this.uuid = player.getUniqueId();
 		this.assemble = assemble;
 		this.setup(player);
-		this.uuid = player.getUniqueId();
 	}
 
 	private void setup(Player player) {
@@ -44,7 +44,10 @@ public class AssembleBoard {
 		}
 
 		// Setup sidebar objective
-		this.objective = this.scoreboard.registerNewObjective("Default", "dummy");
+		if (this.scoreboard.getObjective("Assemble") != null) {
+			this.scoreboard.getObjective("Assemble").unregister();
+		}
+		this.objective = this.scoreboard.registerNewObjective("Assemble", "dummy");
 		this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 		this.objective.setDisplayName(getAssemble().getAdapter().getTitle(player));
 
@@ -64,16 +67,16 @@ public class AssembleBoard {
 		}
 	}
 
-	public String getUniqueIdentifier(String text) {
-		String identifier = getRandomChatColor() + ChatColor.WHITE;
+	public String getUniqueIdentifier(int position) {
+		String identifier = getRandomChatColor(position) + ChatColor.WHITE;
 
 		while (this.identifiers.contains(identifier)) {
-			identifier = identifier + getRandomChatColor() + ChatColor.WHITE;
+			identifier = identifier + getRandomChatColor(position) + ChatColor.WHITE;
 		}
 
 		// This is rare, but just in case, make the method recursive
 		if (identifier.length() > 16) {
-			return this.getUniqueIdentifier(text);
+			return this.getUniqueIdentifier(position);
 		}
 
 		// Add our identifier to the list so there are no duplicates
@@ -83,8 +86,8 @@ public class AssembleBoard {
 	}
 
 	// Gets a random ChatColor and returns the String value of it
-	private static String getRandomChatColor() {
-		return ChatColor.values()[ThreadLocalRandom.current().nextInt(ChatColor.values().length)].toString();
+	private static String getRandomChatColor(int position) {
+		return ChatColor.values()[position].toString();
 	}
 
 }
