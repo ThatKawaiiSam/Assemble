@@ -1,6 +1,7 @@
 package io.github.thatkawaiisam.assemble;
 
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
@@ -46,7 +47,7 @@ public class AssembleBoardEntry {
 		}
 
 		// Add the entry to the team
-		if (!team.getEntries().contains(this.identifier)) {
+		if (team.getEntries() == null || team.getEntries().isEmpty() || !team.getEntries().contains(this.identifier)) {
 			team.addEntry(this.identifier);
 		}
 

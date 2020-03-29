@@ -14,20 +14,17 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-@Getter
 public class AssembleBoard {
 
 	// We assign a unique identifier (random string of ChatColor values)
 	// to each board entry to: bypass the 32 char limit, using
 	// a team's prefix & suffix and a team entry's display name, and to
 	// track the order of entries;
-	private final List<AssembleBoardEntry> entries = new ArrayList<>();
-	private final List<String> identifiers = new ArrayList<>();
-	private Scoreboard scoreboard;
-	private Objective objective;
-	private final UUID uuid;
+	@Getter private final List<AssembleBoardEntry> entries = new ArrayList<>();
+	@Getter private final List<String> identifiers = new ArrayList<>();
+	@Getter private final UUID uuid;
 
-	private Assemble assemble;
+	@Getter private Assemble assemble;
 
 	public AssembleBoard(Player player, Assemble assemble) {
 		this.uuid = player.getUniqueId();
@@ -35,24 +32,32 @@ public class AssembleBoard {
 		this.setup(player);
 	}
 
-	private void setup(Player player) {
-		// Register new scoreboard if needed
-		if (getAssemble().isHook() || !(player.getScoreboard() == Bukkit.getScoreboardManager().getMainScoreboard())) {
-			this.scoreboard = player.getScoreboard();
+	public Scoreboard getScoreboard() {
+		Player player = Bukkit.getPlayer(getUuid());
+		if (getAssemble().isHook() || player.getScoreboard() != Bukkit.getScoreboardManager().getMainScoreboard()) {
+			return player.getScoreboard();
 		} else {
-			this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+			return Bukkit.getScoreboardManager().getNewScoreboard();
 		}
+	}
 
-		// Setup sidebar objective
-		if (this.scoreboard.getObjective("Assemble") != null) {
-			this.scoreboard.getObjective("Assemble").unregister();
+	public Objective getObjective() {
+		Scoreboard scoreboard = getScoreboard();
+		if (scoreboard.getObjective("Assemble") == null) {
+			Objective objective = scoreboard.registerNewObjective("Assemble", "dummy");
+			objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+			objective.setDisplayName(getAssemble().getAdapter().getTitle(Bukkit.getPlayer(getUuid())));
+			return objective;
+		} else {
+			return scoreboard.getObjective("Assemble");
 		}
-		this.objective = this.scoreboard.registerNewObjective("Assemble", "dummy");
-		this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-		this.objective.setDisplayName(getAssemble().getAdapter().getTitle(player));
+	}
 
-		// Update scoreboard
-		player.setScoreboard(this.scoreboard);
+
+	private void setup(Player player) {
+		Scoreboard scoreboard = getScoreboard();
+		player.setScoreboard(scoreboard);
+		getObjective();
 
 		//Send Update
 		AssembleBoardCreatedEvent createdEvent = new AssembleBoardCreatedEvent(this);

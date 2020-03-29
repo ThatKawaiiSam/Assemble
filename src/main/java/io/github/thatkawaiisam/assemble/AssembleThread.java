@@ -37,80 +37,88 @@ public class AssembleThread extends Thread {
 
     private void tick() {
         for (Player player : this.assemble.getPlugin().getServer().getOnlinePlayers()) {
-            AssembleBoard board = this.assemble.getBoards().get(player.getUniqueId());
+            try {
+                AssembleBoard board = this.assemble.getBoards().get(player.getUniqueId());
 
-            // This shouldn't happen, but just in case
-            if (board == null) {
-                continue;
-            }
-
-            Scoreboard scoreboard = board.getScoreboard();
-            Objective objective = board.getObjective();
-
-
-            // Just make a variable so we don't have to
-            // process the same thing twice
-            String title = ChatColor.translateAlternateColorCodes('&', this.assemble.getAdapter().getTitle(player));
-
-            // Update the title if needed
-            if (!objective.getDisplayName().equals(title)) {
-                objective.setDisplayName(title);
-            }
-
-            List<String> newLines = this.assemble.getAdapter().getLines(player);
-
-
-            // Allow adapter to return null/empty list to display nothing
-            if (newLines == null || newLines.isEmpty()) {
-                board.getEntries().forEach(AssembleBoardEntry::remove);
-                board.getEntries().clear();
-            } else {
-                if (this.assemble.getAdapter().getLines(player).size() > 15) {
-                    newLines = this.assemble.getAdapter().getLines(player).subList(0, 15);
+                // This shouldn't happen, but just in case
+                if (board == null) {
+                    continue;
                 }
 
-                // Reverse the lines because scoreboard scores are in descending order
-                if (!this.assemble.getAssembleStyle().isDecending()) {
-                    Collections.reverse(newLines);
+                Scoreboard scoreboard = board.getScoreboard();
+                Objective objective = board.getObjective();
+
+
+                if (scoreboard == null || objective == null) {
+                    continue;
                 }
 
-                // Remove excessive amount of board entries
-                if (board.getEntries().size() > newLines.size()) {
-                    for (int i = newLines.size(); i < board.getEntries().size(); i++) {
-                        AssembleBoardEntry entry = board.getEntryAtPosition(i);
+                // Just make a variable so we don't have to
+                // process the same thing twice
+                String title = ChatColor.translateAlternateColorCodes('&', this.assemble.getAdapter().getTitle(player));
 
-                        if (entry != null) {
-                            entry.remove();
+                // Update the title if needed
+                if (!objective.getDisplayName().equals(title)) {
+                    objective.setDisplayName(title);
+                }
+
+                List<String> newLines = this.assemble.getAdapter().getLines(player);
+
+
+                // Allow adapter to return null/empty list to display nothing
+                if (newLines == null || newLines.isEmpty()) {
+                    board.getEntries().forEach(AssembleBoardEntry::remove);
+                    board.getEntries().clear();
+                } else {
+                    if (this.assemble.getAdapter().getLines(player).size() > 15) {
+                        newLines = this.assemble.getAdapter().getLines(player).subList(0, 15);
+                    }
+
+                    // Reverse the lines because scoreboard scores are in descending order
+                    if (!this.assemble.getAssembleStyle().isDecending()) {
+                        Collections.reverse(newLines);
+                    }
+
+                    // Remove excessive amount of board entries
+                    if (board.getEntries().size() > newLines.size()) {
+                        for (int i = newLines.size(); i < board.getEntries().size(); i++) {
+                            AssembleBoardEntry entry = board.getEntryAtPosition(i);
+
+                            if (entry != null) {
+                                entry.remove();
+                            }
                         }
                     }
-                }
 
-                // Update existing entries / add new entries
-                int cache = this.assemble.getAssembleStyle().getStartNumber();
-                for (int i = 0; i < newLines.size(); i++) {
-                    AssembleBoardEntry entry = board.getEntryAtPosition(i);
+                    // Update existing entries / add new entries
+                    int cache = this.assemble.getAssembleStyle().getStartNumber();
+                    for (int i = 0; i < newLines.size(); i++) {
+                        AssembleBoardEntry entry = board.getEntryAtPosition(i);
 
-                    // Translate any colors
-                    String line = ChatColor.translateAlternateColorCodes('&', newLines.get(i));
+                        // Translate any colors
+                        String line = ChatColor.translateAlternateColorCodes('&', newLines.get(i));
 
-                    // If the entry is null, just create a new one.
-                    // Creating a new AssembleBoardEntry instance will add
-                    // itself to the provided board's entries list.
-                    if (entry == null) {
-                        entry = new AssembleBoardEntry(board, line, i);
+                        // If the entry is null, just create a new one.
+                        // Creating a new AssembleBoardEntry instance will add
+                        // itself to the provided board's entries list.
+                        if (entry == null) {
+                            entry = new AssembleBoardEntry(board, line, i);
+                        }
+
+                        // Update text, setup the team, and update the display values
+                        entry.setText(line);
+                        entry.setup();
+                        entry.send(
+                                this.assemble.getAssembleStyle().isDecending() ? cache-- : cache++
+                        );
                     }
-
-                    // Update text, setup the team, and update the display values
-                    entry.setText(line);
-                    entry.setup();
-                    entry.send(
-                            this.assemble.getAssembleStyle().isDecending() ? cache-- : cache++
-                    );
                 }
-            }
 
-            if (player.getScoreboard() != scoreboard && !assemble.isHook()) {
-                player.setScoreboard(scoreboard);
+                if (player.getScoreboard() != scoreboard && !assemble.isHook()) {
+                    player.setScoreboard(scoreboard);
+                }
+            } catch(Exception e) {
+                throw new AssembleException("There was an error updating " + player.getName() + "'s scoreboard.");
             }
         }
     }
