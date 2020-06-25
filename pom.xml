@@ -34,8 +34,6 @@
     </dependencies>
 
     <build>
-        <defaultGoal>clean install</defaultGoal>
-
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
