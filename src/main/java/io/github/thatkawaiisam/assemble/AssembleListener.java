@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.plugin.Plugin;
 
 @Getter
 public class AssembleListener implements Listener {
@@ -19,8 +21,8 @@ public class AssembleListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		AssembleBoardCreateEvent createEvent = new AssembleBoardCreateEvent(event.getPlayer());
+	public void onPlayerJoin(final PlayerJoinEvent event) {
+		final AssembleBoardCreateEvent createEvent = new AssembleBoardCreateEvent(event.getPlayer());
 
 		Bukkit.getPluginManager().callEvent(createEvent);
 		if (createEvent.isCancelled()) {
@@ -31,8 +33,8 @@ public class AssembleListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent event) {
-		AssembleBoardDestroyEvent destroyEvent = new AssembleBoardDestroyEvent(event.getPlayer());
+	public void onPlayerQuit(final PlayerQuitEvent event) {
+		final AssembleBoardDestroyEvent destroyEvent = new AssembleBoardDestroyEvent(event.getPlayer());
 
 		Bukkit.getPluginManager().callEvent(destroyEvent);
 		if (destroyEvent.isCancelled()) {
@@ -43,4 +45,10 @@ public class AssembleListener implements Listener {
 		event.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
 	}
 
+	@EventHandler
+	public void pluginDisable(final PluginDisableEvent event){
+		final Plugin plugin = event.getPlugin();
+
+		if (plugin.getName().equals(this.assemble.getPlugin().getName())) assemble.cleanup();
+	}
 }
