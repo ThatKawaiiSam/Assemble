@@ -16,22 +16,30 @@ import org.bukkit.scoreboard.Scoreboard;
 
 public class AssembleBoard {
 
-	// We assign a unique identifier (random string of ChatColor values)
-	// to each board entry to: bypass the 32 char limit, using
-	// a team's prefix & suffix and a team entry's display name, and to
-	// track the order of entries;
-	@Getter private final List<AssembleBoardEntry> entries = new ArrayList<>();
-	@Getter private final List<String> identifiers = new ArrayList<>();
-	@Getter private final UUID uuid;
-
 	@Getter private Assemble assemble;
 
+	@Getter private final List<AssembleBoardEntry> entries = new ArrayList<>();
+	@Getter private final List<String> identifiers = new ArrayList<>();
+
+	@Getter private final UUID uuid;
+
+	/**
+	 * Assemble Board.
+	 *
+	 * @param player that the board belongs to.
+	 * @param assemble instance.
+	 */
 	public AssembleBoard(Player player, Assemble assemble) {
 		this.uuid = player.getUniqueId();
 		this.assemble = assemble;
 		this.setup(player);
 	}
 
+	/**
+	 * Get's a player's bukkit scoreboard.
+	 *
+	 * @return either existing scoreboard or new scoreboard.
+	 */
 	public Scoreboard getScoreboard() {
 		Player player = Bukkit.getPlayer(getUuid());
 		if (getAssemble().isHook() || player.getScoreboard() != Bukkit.getScoreboardManager().getMainScoreboard()) {
@@ -41,6 +49,11 @@ public class AssembleBoard {
 		}
 	}
 
+	/**
+	 * Get's the player's scoreboard objective.
+	 *
+	 * @return either existing objecting or new objective.
+	 */
 	public Objective getObjective() {
 		Scoreboard scoreboard = getScoreboard();
 		if (scoreboard.getObjective("Assemble") == null) {
@@ -53,25 +66,37 @@ public class AssembleBoard {
 		}
 	}
 
-
+	/**
+	 * Setup the board.
+	 *
+	 * @param player who's board to setup.
+	 */
 	private void setup(Player player) {
 		Scoreboard scoreboard = getScoreboard();
 		player.setScoreboard(scoreboard);
 		getObjective();
 
-		//Send Update
+		// Send Update.
 		AssembleBoardCreatedEvent createdEvent = new AssembleBoardCreatedEvent(this);
 		Bukkit.getPluginManager().callEvent(createdEvent);
 	}
 
+	/**
+	 * Get the board entry at a specific position.
+	 *
+	 * @param pos to find entry.
+	 * @return entry if it isn't out of range.
+	 */
 	public AssembleBoardEntry getEntryAtPosition(int pos) {
-		if (pos >= this.entries.size()) {
-			return null;
-		} else {
-			return this.entries.get(pos);
-		}
+		return pos >= this.entries.size() ? null : this.entries.get(pos);
 	}
 
+	/**
+	 * Get the unique identifier for position in scoreboard.
+	 *
+	 * @param position for identifier.
+	 * @return unique identifier.
+	 */
 	public String getUniqueIdentifier(int position) {
 		String identifier = getRandomChatColor(position) + ChatColor.WHITE;
 
@@ -90,7 +115,12 @@ public class AssembleBoard {
 		return identifier;
 	}
 
-	// Gets a random ChatColor and returns the String value of it
+	/**
+	 * Gets a ChatColor based off the position in the collection.
+	 *
+	 * @param position of entry.
+	 * @return ChatColor adjacent to position.
+	 */
 	private static String getRandomChatColor(int position) {
 		return ChatColor.values()[position].toString();
 	}

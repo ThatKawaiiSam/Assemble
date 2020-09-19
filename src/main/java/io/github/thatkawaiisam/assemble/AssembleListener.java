@@ -14,6 +14,11 @@ public class AssembleListener implements Listener {
 
 	private Assemble assemble;
 
+	/**
+	 * Assemble Listener.
+	 *
+	 * @param assemble instance.
+	 */
 	public AssembleListener(Assemble assemble) {
 		this.assemble = assemble;
 	}

@@ -16,6 +16,13 @@ public class AssembleBoardEntry {
 	private Team team;
 	private int position;
 
+	/**
+	 * Assemble Board Entry
+	 *
+	 * @param board that entry belongs to.
+	 * @param text of entry.
+	 * @param position of entry.
+	 */
 	public AssembleBoardEntry(AssembleBoard board, String text, int position) {
 		this.board = board;
 		this.text = text;
@@ -25,6 +32,9 @@ public class AssembleBoardEntry {
 		this.setup();
 	}
 
+	/**
+	 * Setup Board Entry.
+	 */
 	public void setup() {
 		final Scoreboard scoreboard = this.board.getScoreboard();
 
@@ -34,24 +44,24 @@ public class AssembleBoardEntry {
 
 		String teamName = this.identifier;
 
-		// This shouldn't happen, but just in case
+		// This shouldn't happen, but just in case.
 		if (teamName.length() > 16) {
 			teamName = teamName.substring(0, 16);
 		}
 
 		Team team = scoreboard.getTeam(teamName);
 
-		// Register the team if it does not exist
+		// Register the team if it does not exist.
 		if (team == null) {
 			team = scoreboard.registerNewTeam(teamName);
 		}
 
-		// Add the entry to the team
+		// Add the entry to the team.
 		if (team.getEntries() == null || team.getEntries().isEmpty() || !team.getEntries().contains(this.identifier)) {
 			team.addEntry(this.identifier);
 		}
 
-		// Add the entry if it does not exist
+		// Add the entry if it does not exist.
 		if (!this.board.getEntries().contains(this)) {
 			this.board.getEntries().add(this);
 		}
@@ -59,6 +69,11 @@ public class AssembleBoardEntry {
 		this.team = team;
 	}
 
+	/**
+	 * Send Board Entry Update.
+	 *
+	 * @param position of entry.
+	 */
 	public void send(int position) {
 		if (this.text.length() > 16) {
 			String prefix = this.text.substring(0, 16);
@@ -93,6 +108,9 @@ public class AssembleBoardEntry {
 		score.setScore(position);
 	}
 
+	/**
+	 * Remove Board Entry from Board.
+	 */
 	public void remove() {
 		this.board.getIdentifiers().remove(this.identifier);
 		this.board.getScoreboard().resetScores(this.identifier);

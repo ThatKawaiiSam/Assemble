@@ -14,6 +14,11 @@ public class AssembleBoardCreatedEvent extends Event {
     private boolean cancelled = false;
     private final AssembleBoard board;
 
+    /**
+     * Assemble Board Created Event.
+     *
+     * @param board of player.
+     */
     public AssembleBoardCreatedEvent(AssembleBoard board) {
         this.board = board;
     }

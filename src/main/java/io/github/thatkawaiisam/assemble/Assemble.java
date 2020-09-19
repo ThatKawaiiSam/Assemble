@@ -17,15 +17,23 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Assemble {
 
 	private JavaPlugin plugin;
+
 	private AssembleAdapter adapter;
-	private Map<UUID, AssembleBoard> boards;
 	private AssembleThread thread;
 	private AssembleListener listeners;
-	private long ticks = 2;
-	private boolean hook = false;
 	private AssembleStyle assembleStyle = AssembleStyle.MODERN;
-	private boolean debugMode = true;
 
+	private Map<UUID, AssembleBoard> boards;
+
+	private long ticks = 2;
+	private boolean hook = false, debugMode = true;
+
+	/**
+	 * Assemble.
+	 *
+	 * @param plugin instance.
+	 * @param adapter
+	 */
 	public Assemble(JavaPlugin plugin, AssembleAdapter adapter) {
 		if (plugin == null) {
 			throw new RuntimeException("Assemble can not be instantiated without a plugin instance!");
@@ -38,20 +46,23 @@ public class Assemble {
 		this.setup();
 	}
 
+	/**
+	 * Setup Assemble.
+	 */
 	public void setup() {
-		//Register Events
+		// Register Events.
 		this.listeners = new AssembleListener(this);
 		this.plugin.getServer().getPluginManager().registerEvents(listeners, this.plugin);
 
-		//Ensure that the thread has stopped running
+		// Ensure that the thread has stopped running.
 		if (this.thread != null) {
 			this.thread.stop();
 			this.thread = null;
 		}
 
-		//Register new boards for existing online players
+		// Register new boards for existing online players.
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			//Make sure it doesn't double up
+			// Make sure it doesn't double up.
 			AssembleBoardCreateEvent createEvent = new AssembleBoardCreateEvent(player);
 
 			Bukkit.getPluginManager().callEvent(createEvent);
@@ -62,21 +73,27 @@ public class Assemble {
 			getBoards().putIfAbsent(player.getUniqueId(), new AssembleBoard(player, this));
 		}
 
-		//Start Thread
+		// Start Thread.
 		this.thread = new AssembleThread(this);
 	}
 
+	/**
+	 *
+	 */
 	public void cleanup() {
+		// Stop thread.
 		if (this.thread != null) {
 			this.thread.stop();
 			this.thread = null;
 		}
 
+		// Unregister listeners.
 		if (listeners != null) {
 			HandlerList.unregisterAll(listeners);
 			listeners = null;
 		}
 
+		// Destroy player scoreboards.
 		for (UUID uuid : getBoards().keySet()) {
 			Player player = Bukkit.getPlayer(uuid);
 

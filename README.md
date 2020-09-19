@@ -17,13 +17,13 @@ Essentially several production projects that I am apart of required very high pe
 ```java
 @Override
 public void onEnable() {
-        //Start Instance
+        // Start Instance.
 	Assemble assemble = new Assemble(this, new ExampleAssembleAdapter());
 	
-	//Set Interval (Tip: 20 ticks = 1 second)
+	// Set Interval (Tip: 20 ticks = 1 second).
 	assemble.setTicks(2);
 	
-	//Set Style (Tip: Viper Style starts at -1 and goes down)
+	// Set Style (Tip: Viper Style starts at -1 and goes down).
 	assemble.setAssembleStyle(AssembleStyle.VIPER);
 }
 ```
@@ -40,7 +40,7 @@ public class ExampleAssembleAdapter implements AssembleAdapter {
 	public List<String> getLines(Player player) {
 		final List<String> toReturn = new ArrayList<>();
 
-        toReturn.add("&a&lThis is a line!");
+		toReturn.add("&a&lThis is a line!");
 
 		return toReturn;
 	}
@@ -53,7 +53,7 @@ public class AssembleSampleListeners implements Listener {
 
     @EventHandler
     public void onBoardCreate(AssembleBoardCreateEvent event) {
-        //Do what you want with the player object
+        // Do what you want with the player object.
     }
 }
 ```
@@ -61,6 +61,6 @@ public class AssembleSampleListeners implements Listener {
 ### Contact
 
 - MC-Market: https://www.mc-market.org/members/53967/
-- Discord: ThatKawaiiSam#3881  
-- Email: sam@orionmc.net
+- Discord: ThatKawaiiSam#2882
+- Telegram: ThatKawaiiSam
 
