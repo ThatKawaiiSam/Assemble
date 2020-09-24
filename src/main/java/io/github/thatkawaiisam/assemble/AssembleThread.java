@@ -70,7 +70,7 @@ public class AssembleThread extends Thread {
                     board.getEntries().forEach(AssembleBoardEntry::remove);
                     board.getEntries().clear();
                 } else {
-                    if (this.assemble.getAdapter().getLines(player).size() > 15) {
+                    if (newLines.size() > 15) {
                         newLines = this.assemble.getAdapter().getLines(player).subList(0, 15);
                     }
 
