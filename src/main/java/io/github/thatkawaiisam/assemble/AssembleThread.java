@@ -118,6 +118,7 @@ public class AssembleThread extends Thread {
                     player.setScoreboard(scoreboard);
                 }
             } catch(Exception e) {
+                e.printStackTrace();
                 throw new AssembleException("There was an error updating " + player.getName() + "'s scoreboard.");
             }
         }
