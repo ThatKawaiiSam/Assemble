@@ -76,9 +76,11 @@ public class AssembleBoard {
 		player.setScoreboard(scoreboard);
 		getObjective();
 
-		// Send Update.
-		AssembleBoardCreatedEvent createdEvent = new AssembleBoardCreatedEvent(this);
-		Bukkit.getPluginManager().callEvent(createdEvent);
+		// Call Events if enabled.
+		if (assemble.isCallEvents()) {
+			AssembleBoardCreatedEvent createdEvent = new AssembleBoardCreatedEvent(this);
+			Bukkit.getPluginManager().callEvent(createdEvent);
+		}
 	}
 
 	/**

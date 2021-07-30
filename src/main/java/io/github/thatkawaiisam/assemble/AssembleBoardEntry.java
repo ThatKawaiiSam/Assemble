@@ -1,13 +1,10 @@
 package io.github.thatkawaiisam.assemble;
 
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-
-import java.util.Set;
 
 public class AssembleBoardEntry {
 

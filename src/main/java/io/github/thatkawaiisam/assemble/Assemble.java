@@ -27,7 +27,7 @@ public class Assemble {
 	private Map<UUID, AssembleBoard> boards;
 
 	private long ticks = 2;
-	private boolean hook = false, debugMode = true;
+	private boolean hook = false, debugMode = true, callEvents = true;
 
 	private final ChatColor[] chatColorCache = ChatColor.values();
 
