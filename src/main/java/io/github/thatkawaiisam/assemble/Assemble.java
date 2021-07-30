@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,11 +29,13 @@ public class Assemble {
 	private long ticks = 2;
 	private boolean hook = false, debugMode = true;
 
+	private final ChatColor[] chatColorCache = ChatColor.values();
+
 	/**
 	 * Assemble.
 	 *
 	 * @param plugin instance.
-	 * @param adapter
+	 * @param adapter that is being provided.
 	 */
 	public Assemble(JavaPlugin plugin, AssembleAdapter adapter) {
 		if (plugin == null) {
@@ -78,7 +81,7 @@ public class Assemble {
 	}
 
 	/**
-	 *
+	 * Cleanup Assemble.
 	 */
 	public void cleanup() {
 		// Stop thread.

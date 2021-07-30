@@ -14,7 +14,6 @@ public class AssembleBoardEntry {
 	private final AssembleBoard board;
 	@Setter private String text, identifier;
 	private Team team;
-	private int position;
 
 	/**
 	 * Assemble Board Entry
@@ -26,7 +25,6 @@ public class AssembleBoardEntry {
 	public AssembleBoardEntry(AssembleBoard board, String text, int position) {
 		this.board = board;
 		this.text = text;
-		this.position = position;
 		this.identifier = this.board.getUniqueIdentifier(position);
 
 		this.setup();

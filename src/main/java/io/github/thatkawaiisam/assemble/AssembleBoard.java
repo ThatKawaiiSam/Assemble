@@ -121,8 +121,8 @@ public class AssembleBoard {
 	 * @param position of entry.
 	 * @return ChatColor adjacent to position.
 	 */
-	private static String getRandomChatColor(int position) {
-		return ChatColor.values()[position].toString();
+	private String getRandomChatColor(int position) {
+		return assemble.getChatColorCache()[position].toString();
 	}
 
 }
