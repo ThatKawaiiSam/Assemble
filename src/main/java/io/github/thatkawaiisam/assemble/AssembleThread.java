@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AssembleThread extends Thread {
 
-    private Assemble assemble;
+    private final Assemble assemble;
 
     /**
      * Assemble Thread.

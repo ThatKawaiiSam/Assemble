@@ -14,14 +14,15 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+@Getter
 public class AssembleBoard {
 
-	@Getter private Assemble assemble;
+	private final Assemble assemble;
 
-	@Getter private final List<AssembleBoardEntry> entries = new ArrayList<>();
-	@Getter private final List<String> identifiers = new ArrayList<>();
+	private final List<AssembleBoardEntry> entries = new ArrayList<>();
+	private final List<String> identifiers = new ArrayList<>();
 
-	@Getter private final UUID uuid;
+	private final UUID uuid;
 
 	/**
 	 * Assemble Board.

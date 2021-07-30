@@ -9,8 +9,9 @@ import org.bukkit.scoreboard.Team;
 public class AssembleBoardEntry {
 
 	private final AssembleBoard board;
-	@Setter private String text, identifier;
+
 	private Team team;
+	@Setter private String text, identifier;
 
 	/**
 	 * Assemble Board Entry

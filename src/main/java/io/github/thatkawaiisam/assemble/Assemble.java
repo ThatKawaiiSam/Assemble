@@ -17,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter @Setter
 public class Assemble {
 
-	private JavaPlugin plugin;
+	private final JavaPlugin plugin;
 
 	private AssembleAdapter adapter;
 	private AssembleThread thread;
@@ -64,13 +64,16 @@ public class Assemble {
 		}
 
 		// Register new boards for existing online players.
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			// Make sure it doesn't double up.
-			AssembleBoardCreateEvent createEvent = new AssembleBoardCreateEvent(player);
+		for (Player player : this.getPlugin().getServer().getOnlinePlayers()) {
 
-			Bukkit.getPluginManager().callEvent(createEvent);
-			if (createEvent.isCancelled()) {
-				return;
+			// Call Events if enabled.
+			if (this.isCallEvents()) {
+				AssembleBoardCreateEvent createEvent = new AssembleBoardCreateEvent(player);
+
+				Bukkit.getPluginManager().callEvent(createEvent);
+				if (createEvent.isCancelled()) {
+					continue;
+				}
 			}
 
 			getBoards().putIfAbsent(player.getUniqueId(), new AssembleBoard(player, this));

@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 @Getter
 public class AssembleListener implements Listener {
 
-	private Assemble assemble;
+	private final Assemble assemble;
 
 	/**
 	 * Assemble Listener.

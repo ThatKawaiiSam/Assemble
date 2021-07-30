@@ -9,8 +9,8 @@ public enum AssembleStyle {
     VIPER(true, -1),
     MODERN(false, 1);
 
-    private boolean descending;
-    private int startNumber;
+    private final boolean descending;
+    private final int startNumber;
 
     /**
      * Assemble Style.
