@@ -1,33 +1,43 @@
 # Assemble
-A high performance Scoreboard API for Spigot 1.7.x to 1.13
-All credit goes to Joeleoli on the original plugin which you can find here: https://github.com/joeleoli/Frame
+> Highly performant Scoreboard library for Spigot 1.7.x to 1.17.x.
+ 
+Credit goes to [Joeleoli](https://github.com/joeleoli) for the original base of this library.
 
-Essentially several production projects that I am apart of required very high performance components to support hundreds of concurrent players per instance. The original version of this plugin gave us this performance with the tradeoff of small features that we needed to further optimise it and give it a unique feel. So I decided to open-source my fork to build my portfolio. 
+---
 
-### Features
+## Features
 * Non-flickering.
 * Supports up to 32 characters per line.
 * Extremely light weight.
-* Developer friendly. Setup your board in a few lines.
+* Developer friendly - Setup your board in a few lines.
 * Custom Events for other plugins to easily hook into.
-* Several different styles (Viper, Kohi, Modern)
-* Changable timing intervals
+* Several different styles numbering styles (Viper, Kohi, Modern).
+* Configurable timing intervals.
 
-### Code Examples
+---
+
+## Code Examples
+
+#### Setup Assemble
 ```java
-@Override
-public void onEnable() {
+public class ExamplePlugin implements JavaPlugin {
+
+    @Override
+    public void onEnable() {
         // Start Instance.
-	Assemble assemble = new Assemble(this, new ExampleAssembleAdapter());
-	
-	// Set Interval (Tip: 20 ticks = 1 second).
-	assemble.setTicks(2);
-	
-	// Set Style (Tip: Viper Style starts at -1 and goes down).
-	assemble.setAssembleStyle(AssembleStyle.VIPER);
+        Assemble assemble = new Assemble(this, new ExampleAssembleAdapter());
+        
+        // Set Interval (Tip: 20 ticks = 1 second).
+        assemble.setTicks(2);
+        
+        // Set Style (Tip: Viper Style starts at -1 and goes down).
+        assemble.setAssembleStyle(AssembleStyle.VIPER);
+    }
+
 }
 ```
 
+#### Assemble Adapter
 ```java
 public class ExampleAssembleAdapter implements AssembleAdapter {
 
@@ -48,6 +58,7 @@ public class ExampleAssembleAdapter implements AssembleAdapter {
 }
 ```
 
+#### Assemble Event Listener
 ```java
 public class AssembleSampleListeners implements Listener {
 
@@ -58,9 +69,10 @@ public class AssembleSampleListeners implements Listener {
 }
 ```
 
-### Contact
+---
 
-- MC-Market: https://www.mc-market.org/members/53967/
+## Contact
+
 - Discord: ThatKawaiiSam#2882
 - Telegram: ThatKawaiiSam
 

@@ -3,7 +3,6 @@ package io.github.thatkawaiisam.assemble;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 import io.github.thatkawaiisam.assemble.events.AssembleBoardCreatedEvent;
 import lombok.Getter;
