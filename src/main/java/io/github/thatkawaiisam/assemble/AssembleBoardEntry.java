@@ -80,16 +80,17 @@ public class AssembleBoardEntry {
 			// Get the last index of the color char in the prefix
 			final int lastColorIndex = prefix.lastIndexOf(ChatColor.COLOR_CHAR);
 
-			final String suffix;
+			String suffix;
 
 			if (lastColorIndex >= 14) {
 				prefix = prefix.substring(0, lastColorIndex);
-
-				// Substring text from colorIndex +2 in order to remove the color code
-				suffix = (ChatColor.getLastColors(this.text.substring(0, 17)) + this.text.substring(lastColorIndex + 2))
-						.substring(0, 16);
+				suffix = ChatColor.getLastColors(this.text.substring(0, 17)) + this.text.substring(lastColorIndex + 2);
 			} else {
-				suffix = (ChatColor.getLastColors(prefix) + this.text.substring(16)).substring(0, 16);
+				suffix = ChatColor.getLastColors(prefix) + this.text.substring(16);
+			}
+
+			if (suffix.length() > 16) {
+				suffix = suffix.substring(0, 16);
 			}
 
 			this.team.setPrefix(prefix);
