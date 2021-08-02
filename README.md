@@ -11,6 +11,7 @@ Essentially several production projects that I am apart of required very high pe
 * Developer friendly. Setup your board in a few lines.
 * Custom Events for other plugins to easily hook into.
 * Several different styles (Viper, Kohi, Modern)
+* Customizable styling
 * Changeable timing intervals
 
 ### Code Examples
@@ -55,6 +56,20 @@ public class AssembleSampleListeners implements Listener {
     public void onBoardCreate(AssembleBoardCreateEvent event) {
         // Do what you want with the player object.
     }
+}
+```
+
+```java
+@Override
+public void onEnable() {
+        // Start Instance.
+	Assemble assemble = new Assemble(this, new ExampleAssembleAdapter());
+	
+	// Set Interval (Tip: 20 ticks = 1 second).
+	assemble.setTicks(2);
+	
+	// Set Custom Style (Tip: This will set the scoreboard scores to range from 8 to -7)
+	assemble.setAssembleStyle(AssembleStyle.CUSTOM.descending(true).startNumber(8));
 }
 ```
 
