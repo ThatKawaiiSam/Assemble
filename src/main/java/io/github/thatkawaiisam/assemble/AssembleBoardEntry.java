@@ -74,13 +74,10 @@ public class AssembleBoardEntry {
 		if (this.text.length() > 16) {
 			String prefix = this.text.substring(0, 16);
 			String suffix;
-
-			if (prefix.charAt(15) == ChatColor.COLOR_CHAR) {
-				prefix = prefix.substring(0, 15);
-				suffix = this.text.substring(15, this.text.length());
-			} else if (prefix.charAt(14) == ChatColor.COLOR_CHAR) {
-				prefix = prefix.substring(0, 14);
-				suffix = this.text.substring(14, this.text.length());
+			final int lastColorIndex = prefix.lastIndexOf(ChatColor.COLOR_CHAR);
+			if (lastColorIndex >= 14) {
+				prefix = prefix.substring(0, lastColorIndex);
+				suffix = this.text.substring(lastColorIndex, this.text.length());
 			} else {
 				if (ChatColor.getLastColors(prefix).equalsIgnoreCase(ChatColor.getLastColors(this.identifier))) {
 					suffix = this.text.substring(16, this.text.length());
