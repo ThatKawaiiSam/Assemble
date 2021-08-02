@@ -77,24 +77,20 @@ public class AssembleBoardEntry {
 			// Make the prefix the first 16 characters of our text
 			String prefix = this.text.substring(0, 16);
 
-			// Get the last index of the color char
+			// Get the last index of the color char in the prefix
 			final int lastColorIndex = prefix.lastIndexOf(ChatColor.COLOR_CHAR);
 
-			final String colors;
+			final String suffix;
 
-			// Cut off trailing color code *after* getting the color for the suffix
-			// This is done after we set the suffix, so that we still retain suffix color
 			if (lastColorIndex >= 14) {
-				// Get any potential colors that could be cut off
-				colors = ChatColor.getLastColors(this.text.substring(0, 17));
 				prefix = prefix.substring(0, lastColorIndex);
-			} else {
-				// Get colors from string
-				colors = ChatColor.getLastColors(prefix);
-			}
 
-			// Make the suffix the next 16 characters, capping it
-			final String suffix = colors + this.text.substring(prefix.length(), Math.min(textLength, 31 - colors.length()));
+				// Substring text from colorIndex +2 in order to remove the color code
+				suffix = (ChatColor.getLastColors(this.text.substring(0, 17)) + this.text.substring(lastColorIndex + 2))
+						.substring(0, 16);
+			} else {
+				suffix = (ChatColor.getLastColors(prefix) + this.text.substring(16)).substring(0, 16);
+			}
 
 			this.team.setPrefix(prefix);
 			this.team.setSuffix(suffix);
