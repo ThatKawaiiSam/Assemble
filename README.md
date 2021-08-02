@@ -11,7 +11,7 @@ Essentially several production projects that I am apart of required very high pe
 * Developer friendly. Setup your board in a few lines.
 * Custom Events for other plugins to easily hook into.
 * Several different styles (Viper, Kohi, Modern)
-* Changable timing intervals
+* Changeable timing intervals
 
 ### Code Examples
 ```java
