@@ -53,7 +53,7 @@ public class AssembleBoardEntry {
 		}
 
 		// Add the entry to the team.
-		if (team.getEntries().isEmpty() || !team.getEntries().contains(this.identifier)) {
+		if (!team.getEntries().contains(this.identifier)) {
 			team.addEntry(this.identifier);
 		}
 
