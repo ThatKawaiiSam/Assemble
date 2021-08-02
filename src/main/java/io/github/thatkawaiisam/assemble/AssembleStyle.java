@@ -21,16 +21,16 @@ public enum AssembleStyle {
 		this.startNumber = startNumber;
 	}
 
-	AssembleStyle reverse() {
+	public AssembleStyle reverse() {
 		return descending(!this.descending);
 	}
 
-	AssembleStyle descending(boolean descending) {
+	public AssembleStyle descending(boolean descending) {
 		this.descending = descending;
 		return this;
 	}
 
-	AssembleStyle startNumber(int startNumber) {
+	public AssembleStyle startNumber(int startNumber) {
 		this.startNumber = startNumber;
 		return this;
 	}
