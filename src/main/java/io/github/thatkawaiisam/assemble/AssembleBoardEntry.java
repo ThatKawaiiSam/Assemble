@@ -94,8 +94,8 @@ public class AssembleBoardEntry {
 			this.team.setSuffix("");
 		}
 
-		Score score = this.board.getObjective().getScore(this.identifier);
-		score.setScore(position);
+		// Set the score
+		this.board.getObjective().getScore(this.identifier).setScore(position);
 	}
 
 	/**
