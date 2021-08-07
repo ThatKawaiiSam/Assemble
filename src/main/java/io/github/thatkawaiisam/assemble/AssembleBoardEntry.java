@@ -1,32 +1,29 @@
 package io.github.thatkawaiisam.assemble;
 
-import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.Set;
+import lombok.Setter;
 
 public class AssembleBoardEntry {
 
 	private final AssembleBoard board;
-	@Setter private String text, identifier;
+
 	private Team team;
-	private int position;
+	@Setter
+	private String text, identifier;
 
 	/**
 	 * Assemble Board Entry
 	 *
-	 * @param board that entry belongs to.
-	 * @param text of entry.
+	 * @param board    that entry belongs to.
+	 * @param text     of entry.
 	 * @param position of entry.
 	 */
 	public AssembleBoardEntry(AssembleBoard board, String text, int position) {
 		this.board = board;
 		this.text = text;
-		this.position = position;
 		this.identifier = this.board.getUniqueIdentifier(position);
 
 		this.setup();
@@ -57,7 +54,7 @@ public class AssembleBoardEntry {
 		}
 
 		// Add the entry to the team.
-		if (team.getEntries() == null || team.getEntries().isEmpty() || !team.getEntries().contains(this.identifier)) {
+		if (!team.getEntries().contains(this.identifier)) {
 			team.addEntry(this.identifier);
 		}
 
@@ -75,22 +72,21 @@ public class AssembleBoardEntry {
 	 * @param position of entry.
 	 */
 	public void send(int position) {
-		if (this.text.length() > 16) {
+		final int textLength = text.length();
+		if (textLength > 16) {
+			// Make the prefix the first 16 characters of our text
 			String prefix = this.text.substring(0, 16);
+
+			// Get the last index of the color char in the prefix
+			final int lastColorIndex = prefix.lastIndexOf(ChatColor.COLOR_CHAR);
+
 			String suffix;
 
-			if (prefix.charAt(15) == ChatColor.COLOR_CHAR) {
-				prefix = prefix.substring(0, 15);
-				suffix = this.text.substring(15, this.text.length());
-			} else if (prefix.charAt(14) == ChatColor.COLOR_CHAR) {
-				prefix = prefix.substring(0, 14);
-				suffix = this.text.substring(14, this.text.length());
+			if (lastColorIndex >= 14) {
+				prefix = prefix.substring(0, lastColorIndex);
+				suffix = ChatColor.getLastColors(this.text.substring(0, 17)) + this.text.substring(lastColorIndex + 2);
 			} else {
-				if (ChatColor.getLastColors(prefix).equalsIgnoreCase(ChatColor.getLastColors(this.identifier))) {
-					suffix = this.text.substring(16, this.text.length());
-				} else {
-					suffix = ChatColor.getLastColors(prefix) + this.text.substring(16, this.text.length());
-				}
+				suffix = ChatColor.getLastColors(prefix) + this.text.substring(16);
 			}
 
 			if (suffix.length() > 16) {
@@ -104,8 +100,8 @@ public class AssembleBoardEntry {
 			this.team.setSuffix("");
 		}
 
-		Score score = this.board.getObjective().getScore(this.identifier);
-		score.setScore(position);
+		// Set the score
+		this.board.getObjective().getScore(this.identifier).setScore(position);
 	}
 
 	/**

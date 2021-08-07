@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter @Setter
 public class Assemble {
 
-	private JavaPlugin plugin;
+	private final JavaPlugin plugin;
 
 	private AssembleAdapter adapter;
 	private AssembleThread thread;
@@ -26,13 +27,15 @@ public class Assemble {
 	private Map<UUID, AssembleBoard> boards;
 
 	private long ticks = 2;
-	private boolean hook = false, debugMode = true;
+	private boolean hook = false, debugMode = true, callEvents = true;
+
+	private final ChatColor[] chatColorCache = ChatColor.values();
 
 	/**
 	 * Assemble.
 	 *
 	 * @param plugin instance.
-	 * @param adapter
+	 * @param adapter that is being provided.
 	 */
 	public Assemble(JavaPlugin plugin, AssembleAdapter adapter) {
 		if (plugin == null) {
@@ -61,13 +64,16 @@ public class Assemble {
 		}
 
 		// Register new boards for existing online players.
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			// Make sure it doesn't double up.
-			AssembleBoardCreateEvent createEvent = new AssembleBoardCreateEvent(player);
+		for (Player player : this.getPlugin().getServer().getOnlinePlayers()) {
 
-			Bukkit.getPluginManager().callEvent(createEvent);
-			if (createEvent.isCancelled()) {
-				return;
+			// Call Events if enabled.
+			if (this.isCallEvents()) {
+				AssembleBoardCreateEvent createEvent = new AssembleBoardCreateEvent(player);
+
+				Bukkit.getPluginManager().callEvent(createEvent);
+				if (createEvent.isCancelled()) {
+					continue;
+				}
 			}
 
 			getBoards().putIfAbsent(player.getUniqueId(), new AssembleBoard(player, this));
@@ -78,7 +84,7 @@ public class Assemble {
 	}
 
 	/**
-	 *
+	 * Cleanup Assemble.
 	 */
 	public void cleanup() {
 		// Stop thread.

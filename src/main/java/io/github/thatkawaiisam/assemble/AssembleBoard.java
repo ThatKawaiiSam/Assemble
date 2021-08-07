@@ -13,14 +13,15 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+@Getter
 public class AssembleBoard {
 
-	@Getter private Assemble assemble;
+	private final Assemble assemble;
 
-	@Getter private final List<AssembleBoardEntry> entries = new ArrayList<>();
-	@Getter private final List<String> identifiers = new ArrayList<>();
+	private final List<AssembleBoardEntry> entries = new ArrayList<>();
+	private final List<String> identifiers = new ArrayList<>();
 
-	@Getter private final UUID uuid;
+	private final UUID uuid;
 
 	/**
 	 * Assemble Board.
@@ -75,9 +76,11 @@ public class AssembleBoard {
 		player.setScoreboard(scoreboard);
 		getObjective();
 
-		// Send Update.
-		AssembleBoardCreatedEvent createdEvent = new AssembleBoardCreatedEvent(this);
-		Bukkit.getPluginManager().callEvent(createdEvent);
+		// Call Events if enabled.
+		if (assemble.isCallEvents()) {
+			AssembleBoardCreatedEvent createdEvent = new AssembleBoardCreatedEvent(this);
+			Bukkit.getPluginManager().callEvent(createdEvent);
+		}
 	}
 
 	/**
@@ -120,8 +123,8 @@ public class AssembleBoard {
 	 * @param position of entry.
 	 * @return ChatColor adjacent to position.
 	 */
-	private static String getRandomChatColor(int position) {
-		return ChatColor.values()[position].toString();
+	private String getRandomChatColor(int position) {
+		return assemble.getChatColorCache()[position].toString();
 	}
 
 }

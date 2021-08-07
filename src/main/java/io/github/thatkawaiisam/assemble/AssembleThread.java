@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AssembleThread extends Thread {
 
-    private Assemble assemble;
+    private final Assemble assemble;
 
     /**
      * Assemble Thread.
@@ -71,7 +71,7 @@ public class AssembleThread extends Thread {
                     board.getEntries().clear();
                 } else {
                     if (newLines.size() > 15) {
-                        newLines = this.assemble.getAdapter().getLines(player).subList(0, 15);
+                        newLines = newLines.subList(0, 15); // Hey! This was my suggestion! -Koupah
                     }
 
                     // Reverse the lines because scoreboard scores are in descending order.

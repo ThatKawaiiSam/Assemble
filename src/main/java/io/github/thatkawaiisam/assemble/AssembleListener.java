@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 @Getter
 public class AssembleListener implements Listener {
 
-	private Assemble assemble;
+	private final Assemble assemble;
 
 	/**
 	 * Assemble Listener.
@@ -25,11 +25,14 @@ public class AssembleListener implements Listener {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		AssembleBoardCreateEvent createEvent = new AssembleBoardCreateEvent(event.getPlayer());
+		// Call Events if enabled.
+		if (assemble.isCallEvents()) {
+			AssembleBoardCreateEvent createEvent = new AssembleBoardCreateEvent(event.getPlayer());
 
-		Bukkit.getPluginManager().callEvent(createEvent);
-		if (createEvent.isCancelled()) {
-			return;
+			Bukkit.getPluginManager().callEvent(createEvent);
+			if (createEvent.isCancelled()) {
+				return;
+			}
 		}
 
 		getAssemble().getBoards().put(event.getPlayer().getUniqueId(), new AssembleBoard(event.getPlayer(), getAssemble()));
@@ -37,11 +40,14 @@ public class AssembleListener implements Listener {
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		AssembleBoardDestroyEvent destroyEvent = new AssembleBoardDestroyEvent(event.getPlayer());
+		// Call Events if enabled.
+		if (assemble.isCallEvents()) {
+			AssembleBoardDestroyEvent destroyEvent = new AssembleBoardDestroyEvent(event.getPlayer());
 
-		Bukkit.getPluginManager().callEvent(destroyEvent);
-		if (destroyEvent.isCancelled()) {
-			return;
+			Bukkit.getPluginManager().callEvent(destroyEvent);
+			if (destroyEvent.isCancelled()) {
+				return;
+			}
 		}
 
 		getAssemble().getBoards().remove(event.getPlayer().getUniqueId());

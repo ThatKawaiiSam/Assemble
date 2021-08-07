@@ -12,6 +12,7 @@ Credit goes to [Joeleoli](https://github.com/joeleoli) for the original base of 
 * Developer friendly - Setup your board in a few lines.
 * Custom Events for other plugins to easily hook into.
 * Several different styles numbering styles (Viper, Kohi, Modern).
+* Customizable styling
 * Configurable timing intervals.
 
 ---
@@ -69,10 +70,23 @@ public class AssembleSampleListeners implements Listener {
 }
 ```
 
+```java
+@Override
+public void onEnable() {
+        // Start Instance.
+	Assemble assemble = new Assemble(this, new ExampleAssembleAdapter());
+	
+	// Set Interval (Tip: 20 ticks = 1 second).
+	assemble.setTicks(2);
+	
+	// Set Custom Style (Tip: This will set the scoreboard scores to range from 8 to -7)
+	assemble.setAssembleStyle(AssembleStyle.CUSTOM.descending(true).startNumber(8));
+}
+```
+
 ---
 
 ## Contact
 
 - Discord: ThatKawaiiSam#2882
 - Telegram: ThatKawaiiSam
-
