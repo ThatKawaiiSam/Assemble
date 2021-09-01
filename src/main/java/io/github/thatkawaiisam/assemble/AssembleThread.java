@@ -71,7 +71,7 @@ public class AssembleThread extends Thread {
                     board.getEntries().clear();
                 } else {
                     if (newLines.size() > 15) {
-                        newLines = newLines.subList(0, 15); // Hey! This was my suggestion! -Koupah
+                        newLines = newLines.subList(0, 15);
                     }
 
                     // Reverse the lines because scoreboard scores are in descending order.
