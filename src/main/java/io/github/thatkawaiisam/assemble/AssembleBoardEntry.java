@@ -1,6 +1,5 @@
 package io.github.thatkawaiisam.assemble;
 
-import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -72,33 +71,10 @@ public class AssembleBoardEntry {
 	 * @param position of entry.
 	 */
 	public void send(int position) {
-		final int textLength = text.length();
-		if (textLength > 16) {
-			// Make the prefix the first 16 characters of our text
-			String prefix = this.text.substring(0, 16);
-
-			// Get the last index of the color char in the prefix
-			final int lastColorIndex = prefix.lastIndexOf(ChatColor.COLOR_CHAR);
-
-			String suffix;
-
-			if (lastColorIndex >= 14) {
-				prefix = prefix.substring(0, lastColorIndex);
-				suffix = ChatColor.getLastColors(this.text.substring(0, 17)) + this.text.substring(lastColorIndex + 2);
-			} else {
-				suffix = ChatColor.getLastColors(prefix) + this.text.substring(16);
-			}
-
-			if (suffix.length() > 16) {
-				suffix = suffix.substring(0, 16);
-			}
-
-			this.team.setPrefix(prefix);
-			this.team.setSuffix(suffix);
-		} else {
-			this.team.setPrefix(this.text);
-			this.team.setSuffix("");
-		}
+		// Set Prefix & Suffix.
+		String[] split = AssembleUtils.splitTeamText(text);
+		this.team.setPrefix(split[0]);
+		this.team.setSuffix(split[1]);
 
 		// Set the score
 		this.board.getObjective().getScore(this.identifier).setScore(position);
