@@ -21,7 +21,7 @@ Credit goes to [Joeleoli](https://github.com/joeleoli) for the original base of 
 
 #### Setup Assemble
 ```java
-public class ExamplePlugin implements JavaPlugin {
+public class ExamplePlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
