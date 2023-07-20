@@ -91,14 +91,4 @@ public class AssembleBoard {
 		return pos >= this.entries.size() ? null : this.entries.get(pos);
 	}
 
-	/**
-	 * Gets a ChatColor based off the position in the collection.
-	 *
-	 * @param position of entry.
-	 * @return ChatColor adjacent to position.
-	 */
-	private String getRandomChatColor(int position) {
-		return assemble.getChatColorCache()[position].toString();
-	}
-
 }
