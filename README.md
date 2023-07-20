@@ -7,7 +7,7 @@ Credit goes to [Joeleoli](https://github.com/joeleoli) for the original base of 
 
 ## Features
 * Non-flickering.
-* Supports up to 32 characters per line.
+* Supports up to 48 characters per line.
 * Extremely light weight.
 * Developer friendly - Setup your board in a few lines.
 * Custom Events for other plugins to easily hook into.

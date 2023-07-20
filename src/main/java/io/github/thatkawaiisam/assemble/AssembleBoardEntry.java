@@ -1,9 +1,8 @@
 package io.github.thatkawaiisam.assemble;
 
+import lombok.Setter;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-
-import lombok.Setter;
 
 public class AssembleBoardEntry {
 
@@ -11,7 +10,7 @@ public class AssembleBoardEntry {
 
 	private Team team;
 	@Setter
-	private String text, identifier;
+	private String text;
 
 	/**
 	 * Assemble Board Entry
@@ -23,7 +22,6 @@ public class AssembleBoardEntry {
 	public AssembleBoardEntry(AssembleBoard board, String text, int position) {
 		this.board = board;
 		this.text = text;
-		this.identifier = this.board.getUniqueIdentifier(position);
 
 		this.setup();
 	}
@@ -38,23 +36,18 @@ public class AssembleBoardEntry {
 			return;
 		}
 
-		String teamName = this.identifier;
+		String[] split = AssembleUtils.splitTeamText(text);
 
-		// This shouldn't happen, but just in case.
-		if (teamName.length() > 16) {
-			teamName = teamName.substring(0, 16);
-		}
-
-		Team team = scoreboard.getTeam(teamName);
+		Team team = scoreboard.getTeam(split[1]);
 
 		// Register the team if it does not exist.
 		if (team == null) {
-			team = scoreboard.registerNewTeam(teamName);
+			team = scoreboard.registerNewTeam(split[1]);
 		}
 
 		// Add the entry to the team.
-		if (!team.getEntries().contains(this.identifier)) {
-			team.addEntry(this.identifier);
+		if (!team.getEntries().contains(team.getName())) {
+			team.addEntry(team.getName());
 		}
 
 		// Add the entry if it does not exist.
@@ -71,21 +64,29 @@ public class AssembleBoardEntry {
 	 * @param position of entry.
 	 */
 	public void send(int position) {
-		// Set Prefix & Suffix.
 		String[] split = AssembleUtils.splitTeamText(text);
-		this.team.setPrefix(split[0]);
-		this.team.setSuffix(split[1]);
+
+		// Set Prefix & Suffix.
+		String prefix = split[0];
+		String suffix = split[2];
+
+		if (prefix != null) {
+			team.setPrefix(prefix);
+		}
+
+		if (suffix != null) {
+			team.setSuffix(suffix);
+		}
 
 		// Set the score
-		this.board.getObjective().getScore(this.identifier).setScore(position);
+		this.board.getObjective().getScore(team.getName()).setScore(position);
 	}
 
 	/**
 	 * Remove Board Entry from Board.
 	 */
 	public void remove() {
-		this.board.getIdentifiers().remove(this.identifier);
-		this.board.getScoreboard().resetScores(this.identifier);
+		this.board.getScoreboard().resetScores(team.getName());
 	}
 
 }

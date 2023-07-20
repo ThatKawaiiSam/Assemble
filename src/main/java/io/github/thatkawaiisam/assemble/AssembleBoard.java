@@ -1,17 +1,16 @@
 package io.github.thatkawaiisam.assemble;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import io.github.thatkawaiisam.assemble.events.AssembleBoardCreatedEvent;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Getter
 public class AssembleBoard {
@@ -19,7 +18,6 @@ public class AssembleBoard {
 	private final Assemble assemble;
 
 	private final List<AssembleBoardEntry> entries = new ArrayList<>();
-	private final List<String> identifiers = new ArrayList<>();
 
 	private final UUID uuid;
 
@@ -91,30 +89,6 @@ public class AssembleBoard {
 	 */
 	public AssembleBoardEntry getEntryAtPosition(int pos) {
 		return pos >= this.entries.size() ? null : this.entries.get(pos);
-	}
-
-	/**
-	 * Get the unique identifier for position in scoreboard.
-	 *
-	 * @param position for identifier.
-	 * @return unique identifier.
-	 */
-	public String getUniqueIdentifier(int position) {
-		String identifier = getRandomChatColor(position) + ChatColor.WHITE;
-
-		while (this.identifiers.contains(identifier)) {
-			identifier = identifier + getRandomChatColor(position) + ChatColor.WHITE;
-		}
-
-		// This is rare, but just in case, make the method recursive
-		if (identifier.length() > 16) {
-			return this.getUniqueIdentifier(position);
-		}
-
-		// Add our identifier to the list so there are no duplicates
-		this.identifiers.add(identifier);
-
-		return identifier;
 	}
 
 	/**
